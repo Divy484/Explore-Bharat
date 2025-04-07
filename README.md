@@ -22,23 +22,6 @@ Contact Form: Allows users to reach out with inquiries or feedback.<br>
 <br>
 <br>
 <br>
-<h2>Explore Bharat - Folder Structure</h2>
-
-<ul>
-    <li>.vscode: VSCode settings.</li>
-    <li>about_india: Information about India.</li>
-    <li>contact_us: Contact page resources.</li>
-    <li>css: Stylesheets for the website.</li>
-    <li>explore_by_categories: Information categorized by different aspects.</li>
-    <li>explore_by_states: State-wise information.</li>
-    <li>images: Images used in the website.</li>
-    <li>inquiry: Resources for the inquiry section.</li>
-    <li>js: JavaScript files for the website.</li>
-    <li>index.html: Main HTML file.</li>
-</ul>
-
-<br>
-<br>
 <h2>Visit the Website</h2>
 You can view the live version of Explore Bharat at the following link:
 <br>
