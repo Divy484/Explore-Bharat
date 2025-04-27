@@ -3,27 +3,37 @@ const db = require("../config/db");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-    res.render("pages/inquiry");
+router.get("/", async (req, res) => {
+    try {
+        const [destinations] = await db.promise().query('SELECT name FROM places');
+        const user = req.session.user;
+        
+        res.render('pages/inquiry', { destinations, user });
+    } catch(err) {
+        console.error(err);
+        req.flash('error', 'Something went wrong while loading the page.!');
+        res.redirect('/');
+    }
 });
 
 router.post("/", async (req, res) => {
-    const { fname, lname, email, phoneNo, depDate, retDate, address, destAddress, additional } = req.body;
+    const { name, email, destination, inquiryType, message } = req.body;
+    const userID = req.session.user.id;
 
     try{
         await db
         .promise()
         .query(
-            `INSERT INTO inquiry (firstname, lastname, email, phoneNo, departureDate, returnDate, address, destinationAddress, additionalDetails)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [fname, lname, email, phoneNo, depDate, retDate, address, destAddress, additional]
+            `INSERT INTO inquiries (user_id, name, email, destination, inquiry_type, message)
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            [userID, name, email, destination, inquiryType, message]
         );
 
-        req.flash("success", "Inquiry submitted successfully! We will contact you soon.");
+        req.flash("success", "Your inquiry has been submitted successfully!!");
         res.redirect("/inquiry");
     } catch(err){
-        console.log(err);
-        req.flash("error", "Internal Server error!!");
+        console.error(err);
+        req.flash('error', 'Failed to submit your inquiry. Please try again.');
         res.redirect("/");
     }
 });

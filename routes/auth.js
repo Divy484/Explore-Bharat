@@ -147,6 +147,7 @@ router.get("/auth/protected", async (req, res) => {
       }
 
       req.session.user = {
+        id: existingUser[0].id,
         name: req.user.displayName,
         email: email,
         role: "user"

@@ -10,6 +10,11 @@
             <li class="nav-item"><a class="nav-link" href="/about_india">About India</a></li>
             <li class="nav-item"><a class="nav-link" href="/contact_us">Contact us</a></li>
             <li class="nav-item"><a class="nav-link" href="/inquiry">Inquiry</a></li>
+
+            <form class="d-flex search-form" role="search" action="/search" method="GET">
+                <input class="form-control search-input" type="search" name="q" placeholder="Search destinations..." aria-label="Search" required>
+                <button class="btn btn-outline-light search-btn" type="submit">Search</button>
+            </form>
             
             <% if (!currentUser) { %>
                 <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>

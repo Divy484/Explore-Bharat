@@ -43,6 +43,10 @@ const authRoutes = require("./routes/auth.js");
 const inquiryRoutes = require("./routes/inquiry.js");
 const adminRoutes = require("./routes/admin.js");
 const contactRouter = require("./routes/contact.js");
+const placeRouter = require("./routes/place.js");
+const categoryRouter = require("./routes/categories.js");
+const stateRouter = require("./routes/states.js");
+const searchRouter = require("./routes/search.js");
 
 function isUser(req, res, next) {
     if (req.session.user && req.session.user.role === "user") return next();
@@ -60,6 +64,10 @@ app.use("/", authRoutes);
 app.use("/inquiry", isUser, inquiryRoutes);
 app.use("/admin", isAdmin, adminRoutes);
 app.use("/contact_us", isUser, contactRouter);
+app.use("/places", isUser, placeRouter);
+app.use("/category", isUser, categoryRouter);
+app.use("/states", isUser, stateRouter);
+app.use("/search", isUser, searchRouter);
 
 app.get("/", isUser, (req, res) => {
     res.render("pages/index", { user: req.session.user });
