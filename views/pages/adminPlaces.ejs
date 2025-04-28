@@ -29,7 +29,7 @@
                             <td><%= place.state_name %></td>
                             <td><%= place.category_name %></td>
                             <td>
-                                <a href="/admin/editPlace/<%= place.id %>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                <a href="/admin/editPlace/<%= place.id %>" class="btn btn-sm btn-outline-primary edit-btn"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                             </td>
                         </tr>
                     <% }) %>
@@ -47,4 +47,23 @@
 <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
 <script>
     new DataTable('#placesTable');
+
+    $(document).on('click', '.edit-btn', function(e) {
+        e.preventDefault();
+        const href = $(this).attr('href');
+
+        Swal.fire({
+            title: 'Are you sure, You want to edit details?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Edit it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = href;
+            }
+        });
+    });
 </script>

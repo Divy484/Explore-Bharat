@@ -254,16 +254,17 @@ router.post('/editPlace/:id', upload.fields([
         } = req.body;
 
         const placeId = req.params.id;
-
         const slug = name.trim().toLowerCase().replace(/\s+/g, '-');
-
         const folderName = slug;
         const folderPath = path.join(__dirname, '..', 'public', 'images', folderName);
 
         await fs.ensureDir(folderPath);
 
-        // Update banner image if new image is provided
-        let bannerImagePath = req.body.existing_banner || '';
+        // Fetch the current place details (existing images)
+        const [placeDetails] = await db.promise().query(`SELECT * FROM places WHERE id = ?`, [placeId]);
+
+        // Handle banner image
+        let bannerImagePath = placeDetails.banner_image || '';
         if (req.files['banner_image']) {
             const bannerFile = req.files['banner_image'][0];
             const ext = path.extname(bannerFile.originalname);
@@ -272,11 +273,20 @@ router.post('/editPlace/:id', upload.fields([
 
             await fs.move(bannerFile.path, finalBannerPath);
             bannerImagePath = `/images/${folderName}/${bannerFileName}`;
+
+            // Delete the old banner image if it's being replaced
+            if (placeDetails.banner_image && placeDetails.banner_image !== bannerImagePath) {
+                const oldBannerPath = path.join(__dirname, '..', 'public', placeDetails.banner_image);
+                if (await fs.pathExists(oldBannerPath)) {
+                    await fs.remove(oldBannerPath);
+                }
+            }
         }
 
-        // Update gallery images if new ones are provided
+        // Handle gallery images
         let galleryImagePaths = req.body.existing_gallery_images || [];
         if (req.files['gallery_images']) {
+            galleryImagePaths = [];
             for (let i = 0; i < req.files['gallery_images'].length; i++) {
                 const galleryFile = req.files['gallery_images'][i];
                 const ext = path.extname(galleryFile.originalname);
@@ -288,8 +298,8 @@ router.post('/editPlace/:id', upload.fields([
             }
         }
 
-        // Update category page image if new one is provided
-        let categoryImgPath = req.body.existing_category_page_image || '';
+        // Handle category page image
+        let categoryImgPath = placeDetails.category_page_image || '';
         if (req.files['category_page_image']) {
             const imgFile = req.files['category_page_image'][0];
             const ext = path.extname(imgFile.originalname);
@@ -298,10 +308,18 @@ router.post('/editPlace/:id', upload.fields([
 
             await fs.move(imgFile.path, finalImgPath);
             categoryImgPath = `/images/${folderName}/${imgFileName}`;
+
+            // Delete old category image if replaced
+            if (placeDetails.category_page_image && placeDetails.category_page_image !== categoryImgPath) {
+                const oldCategoryPath = path.join(__dirname, '..', 'public', placeDetails.category_page_image);
+                if (await fs.pathExists(oldCategoryPath)) {
+                    await fs.remove(oldCategoryPath);
+                }
+            }
         }
 
-        // Update state page image if new one is provided
-        let stateImgPath = req.body.existing_state_page_image || '';
+        // Handle state page image
+        let stateImgPath = placeDetails.state_page_image || '';
         if (req.files['state_page_image']) {
             const imgFile = req.files['state_page_image'][0];
             const ext = path.extname(imgFile.originalname);
@@ -310,11 +328,20 @@ router.post('/editPlace/:id', upload.fields([
 
             await fs.move(imgFile.path, finalImgPath);
             stateImgPath = `/images/${folderName}/${imgFileName}`;
+
+            // Delete old state page image if replaced
+            if (placeDetails.state_page_image && placeDetails.state_page_image !== stateImgPath) {
+                const oldStatePath = path.join(__dirname, '..', 'public', placeDetails.state_page_image);
+                if (await fs.pathExists(oldStatePath)) {
+                    await fs.remove(oldStatePath);
+                }
+            }
         }
 
-        // Update hotel images if new ones are provided
+        // Handle hotel images
         let hotelImagePaths = req.body.existing_hotel_images || [];
         if (req.files['hotel_images']) {
+            hotelImagePaths = [];
             for (let i = 0; i < req.files['hotel_images'].length; i++) {
                 const hotelFile = req.files['hotel_images'][i];
                 const ext = path.extname(hotelFile.originalname);
@@ -331,7 +358,7 @@ router.post('/editPlace/:id', upload.fields([
             UPDATE places SET
             name = ?, slug = ?, state_id = ?, category_id = ?, banner_image = ?, history = ?, 
             attractions = ?, timings = ?, road_transport = ?, train_transport = ?, air_transport = ?, 
-            category_page_image = ?, description = ?, state_page_image = ?
+            category_page_image = ?, description = ?, state_page_image = ? 
             WHERE id = ?
         `;
         await db.promise().query(updatePlaceQuery, [
@@ -371,7 +398,7 @@ router.post('/editPlace/:id', upload.fields([
 
         for (let i = 0; i < guideNamesArray.length; i++) {
             await db.promise().query(
-                `INSERT INTO place_guides (place_id, name, mobile) VALUES (?, ?, ?)`,
+                `INSERT INTO place_guides (place_id, name, mobile) VALUES (?, ?, ?)` ,
                 [placeId, guideNamesArray[i], guideMobilesArray[i]]
             );
         }

@@ -16,7 +16,7 @@
     <div id="places_carousel_back" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="images/statue/sou_updated.jpg" class="d-block w-100" alt="Slide 1">
+          <img src="images/statue-of-unity/sou_updated.jpg" class="d-block w-100" alt="Slide 1">
         </div>
         <div class="carousel-item">
           <img src="images/taj_updated.jpg" class="d-block w-100" alt="Slide 2">
@@ -44,7 +44,7 @@
       </div>
       <div class="carousel-inner">
         <div class="carousel-item active" onclick="openPage('/places/statue-of-unity')">
-          <img src="images/statue/sou_updated.jpg" class="d-block w-100" alt="Slide 1">
+          <img src="images/statue-of-unity/sou_updated.jpg" class="d-block w-100" alt="Slide 1">
           <div class="carousel-caption">
             <h5>STATUE OF UNITY</h5>
           </div>
@@ -190,7 +190,19 @@
     </div>
   </div>
 
+  <!-- Floating Chat Icon -->
+  <div class="chat-icon" onclick="openChat()">
+    <img src="images/explore-bharat-high-resolution-logo-transparent (1).png" alt="AI">
+  </div>
+
+</section>
+
   <script>
+    //Floating chat
+  function openChat(){
+      window.location.href = "/chatbot";
+  }
+
     // Function to check if an element is in the viewport
     function isInViewport(element) {
         const rect = element.getBoundingClientRect();

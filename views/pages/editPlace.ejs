@@ -108,7 +108,7 @@
 
                     <input type="text" name="hotel_names[]" value="<%= hotel.name %>" placeholder="Hotel Name" class="form-control mb-2" required>
 
-                    <input type="file" class="form-control hotelInput" name="hotel_images[]" accept="image/*" onchange="previewHotels(event)">
+                    <input type="file" class="form-control hotelInput" name="hotel_images" accept="image/*" onchange="previewHotels(event)">
                     
                     <div class="hotelPreview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:10px;">
                         <img src="<%= hotel.image_path %>" alt="Hotel Image" style="width:120px; height:80px; object-fit:cover; border-radius:8px;">
