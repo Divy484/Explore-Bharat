@@ -33,7 +33,7 @@
               <td><%= new Date(inq.created_at).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) %></td>
 
               <td>
-                <button class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-plus"></i></button>
+                <a href="/admin/chat/<%= inq.user_id %>" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-plus"></i></a>
                 <!-- <button class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-eye"></i></button> -->
               </td>
             </tr>

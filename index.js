@@ -50,6 +50,8 @@ const searchRouter = require("./routes/search.js");
 const adminBlogRouter = require("./routes/adminBlog.js");
 const blogRouter = require("./routes/blogs.js");
 const chatbotRouter = require("./routes/chatbot.js");
+const chatRouter = require("./routes/chat.js");
+const adminChatRouter = require("./routes/adminChat.js");
 
 function isUser(req, res, next) {
     if (req.session.user && req.session.user.role === "user") return next();
@@ -65,7 +67,7 @@ function isAdmin(req, res, next) {
 
 app.use("/", authRoutes);
 app.use("/inquiry", isUser, inquiryRoutes);
-app.use("/admin", isAdmin, adminRoutes, adminBlogRouter);
+app.use("/admin", isAdmin, adminRoutes, adminBlogRouter, adminChatRouter);
 app.use("/contact_us", isUser, contactRouter);
 app.use("/places", isUser, placeRouter);
 app.use("/category", isUser, categoryRouter);
@@ -73,6 +75,7 @@ app.use("/states", isUser, stateRouter);
 app.use("/search", isUser, searchRouter);
 app.use("/blogs", isUser, blogRouter);
 app.use("/chatbot", isUser, chatbotRouter);
+app.use("/chat", isUser, chatRouter);
 
 app.get("/", isUser, (req, res) => {
     res.render("pages/index", { user: req.session.user });

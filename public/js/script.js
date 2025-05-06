@@ -41,3 +41,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function openPage(pageName){
   window.open(pageName,'_self');
 }
+
+//Floating chat
+function openChat(){
+  window.location.href = "/chatbot";
+}
