@@ -23,7 +23,16 @@ router.get("/:slug", async (req, res) => {
 
         const guides = await db.promise().query(`SELECT name, mobile FROM place_guides WHERE place_id = ?`, [place.id]);
 
+        const [reviews] = await db.promise().query(`
+            SELECT r.*, CONCAT(u.firstname, ' ', u.lastname) AS username
+            FROM reviews AS r
+            JOIN users AS u ON r.user_id = u.id
+            WHERE r.place_id = ?
+            ORDER BY r.created_at DESC
+          `, [place.id]);
+
         res.render("pages/place", { place: {
+            id: place.id,
             name: place.name,
             headerImage: place.banner_image,
             history: place.history,
@@ -35,7 +44,8 @@ router.get("/:slug", async (req, res) => {
             map_embed: place.map_embed,
             gallary: gallary[0],
             hotels: hotels[0],
-            guides: guides[0]
+            guides: guides[0],
+            reviews: reviews
         }});
 
     } catch (err) {

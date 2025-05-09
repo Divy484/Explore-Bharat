@@ -52,6 +52,7 @@ const blogRouter = require("./routes/blogs.js");
 const chatbotRouter = require("./routes/chatbot.js");
 const chatRouter = require("./routes/chat.js");
 const adminChatRouter = require("./routes/adminChat.js");
+const reviweRouter = require("./routes/reviews.js");
 
 function isUser(req, res, next) {
     if (req.session.user && req.session.user.role === "user") return next();
@@ -69,7 +70,7 @@ app.use("/", authRoutes);
 app.use("/inquiry", isUser, inquiryRoutes);
 app.use("/admin", isAdmin, adminRoutes, adminBlogRouter, adminChatRouter);
 app.use("/contact_us", isUser, contactRouter);
-app.use("/places", isUser, placeRouter);
+app.use("/places", isUser, placeRouter, reviweRouter);
 app.use("/category", isUser, categoryRouter);
 app.use("/states", isUser, stateRouter);
 app.use("/search", isUser, searchRouter);
