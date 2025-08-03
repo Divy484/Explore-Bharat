@@ -117,4 +117,4 @@ Visit the deployed site here:
 
 ## 👨‍💻 Developer Notes
 
-For setup, contribution, or code structure explanations, refer to the full [Explore Bharat Project Report](mailto:divy1544@gmail.com) or scan the QR code available in the PDF.
+For setup, contribution, or code structure explanations, refer to the full [Explore Bharat Project Report](mailto:divy1544@gmail.com).
